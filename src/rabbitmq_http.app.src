@@ -1,0 +1,16 @@
+%%
+%% @doc RabbitMQ HTTP
+%% @author Alex Haro <alex@life360.com>
+%%
+%% See LICENSE for license information.
+%% Copyright (c) 2012 Life360
+%%
+
+{application, rabbitmq_http,
+ [{description, "Simple AMQP over HTTP"},
+  {vsn, "0.1"},
+  {modules, []},
+  {registered, []},
+  {mod, {rabbitmq_http, []}},
+  {env, []},
+  {applications, [kernel, stdlib]}]}.
