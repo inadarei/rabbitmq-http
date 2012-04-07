@@ -13,7 +13,12 @@
 -export([start/2, stop/1]).
 
 start(normal, []) ->
+    rabbit_mochiweb:register_context_handler(rabbitmq_http, "http/api",
+                                             fun rabbitmq_http_worker:handle_request/2,
+                                             "RabbitMQ HTTP API"),
+
     rabbitmq_http_sup:start_link().
 
 stop(_State) ->
+    rabbit_mochiweb:unregister_context_handler(rabbitmq_http),
     ok.

@@ -13,4 +13,4 @@
   {registered, []},
   {mod, {rabbitmq_http, []}},
   {env, []},
-  {applications, [kernel, stdlib]}]}.
+  {applications, [kernel, stdlib, rabbitmq_mochiweb]}]}.

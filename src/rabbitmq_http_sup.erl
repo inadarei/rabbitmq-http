@@ -16,7 +16,7 @@ start_link() ->
     supervisor:start_link({local, ?MODULE}, ?MODULE, _Arg = []).
 
 init([]) ->
-    {ok, {{one_for_one, 3, 10},
+    {ok, {{one_for_one, 10, 10},
           [{rabbitmq_http_worker,
             {rabbitmq_http_worker, start_link, []},
             permanent,
