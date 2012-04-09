@@ -1,1 +1,1 @@
-DEPS:=rabbitmq-mochiweb
+DEPS:=rabbitmq-server rabbitmq-mochiweb rabbitmq-erlang-client
