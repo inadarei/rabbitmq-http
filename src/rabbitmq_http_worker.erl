@@ -28,7 +28,10 @@ init([]) ->
     {ok, #state{channel = Channel}}.
 
 terminate(_, #state{channel = Channel}) ->
-    amqp_channel:call(Channel, #'channel.close'{}),
+    amqp_connection:close(Channel),
+    ok;
+
+terminate(_, _) ->
     ok.
 
 dispatch_request(_, Req) ->
