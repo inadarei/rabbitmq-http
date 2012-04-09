@@ -32,18 +32,19 @@ terminate(_, #state{channel = Channel}) ->
     ok.
 
 handle_request(_, Req) ->
-    io:format("handle_request ~p ~n", [Req:get(raw_path)]),
-    Req:respond({200, [{"Content-Type", "text/plain"}], "Request Received"}),
+    gen_server:call({global, ?MODULE}, {request, Req}),
     ok.
 
 code_change(_, State, _) ->
     {ok, State}.
 
-handle_call(_, _, State) ->
-    {noreply, State}.
+handle_call({request, Req}, _, State = #state{channel = Channel}) ->
+    io:format("handle_request ~p ~p ~n", [Req:get(raw_path), Channel]),
+    Req:respond({200, [{"Content-Type", "text/plain"}], "Request Received"}),
+    {reply, ok, State};
 
-handle_cast({request, _Req}, State) ->
-    {noreply, State};
+handle_call(_, _, State) ->
+    {reply, ok, State}.
 
 handle_cast(_, State) ->
     {noreply, State}.
