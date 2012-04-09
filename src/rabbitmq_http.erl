@@ -20,5 +20,5 @@ start(normal, []) ->
     rabbitmq_http_sup:start_link().
 
 stop(_State) ->
-    rabbit_mochiweb:unregister_context_handler(rabbitmq_http),
+    rabbit_mochiweb:unregister_context(rabbitmq_http),
     ok.
