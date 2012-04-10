@@ -12,6 +12,7 @@
 -include_lib("amqp_client/include/amqp_client.hrl").
 
 -define(MQ_EXCHANGE, <<"rabbitmq_http.topic">>).
+-define(MQ_ROUTE_KEY, <<"#">>).
 -define(MQ_TYPE, <<"topic">>).
 
 -endif.

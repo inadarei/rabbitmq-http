@@ -22,5 +22,11 @@ init([]) ->
             permanent,
             10000,
             worker,
-            [rabbitmq_http_worker]}
+            [rabbitmq_http_worker]},
+           {rabbitmq_http_subscriber,
+            {rabbitmq_http_subscriber, start_link, []},
+            permanent,
+            10000,
+            worker,
+            [rabbitmq_http_subscriber]}
           ]}}.
