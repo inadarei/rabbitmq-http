@@ -21,7 +21,7 @@ start_link() ->
     gen_server:start_link({global, ?MODULE}, ?MODULE, [], []).
 
 init([]) ->
-    {ok, Channel} = setup_rabbitmq(),
+    {ok, Channel} = rabbitmq_http_util:start_rabbitmq_channel(),
     {ok, #state{channel = Channel}}.
 
 terminate(_, #state{channel = Channel}) ->
@@ -91,17 +91,3 @@ publish_message(Body, Topic, Channel) ->
     amqp_channel:call(Channel, BasicPublish, Content),
 
     {200, [{"Content-Type", "text/plain"}], <<"OK">>}.
-
-setup_rabbitmq() ->
-    {ok, Connection} = amqp_connection:start(#amqp_params_direct{}),
-    {ok, Channel} = amqp_connection:open_channel(Connection),
-    ExchangeDeclare = #'exchange.declare'{exchange = ?MQ_EXCHANGE,
-                                          type = ?MQ_TYPE,
-                                          passive = false,
-                                          durable = false,
-                                          auto_delete = false,
-                                          internal = false,
-                                          nowait = false,
-                                          arguments = []},
-    #'exchange.declare_ok'{} = amqp_channel:call(Channel, ExchangeDeclare),
-    {ok, Channel}.
