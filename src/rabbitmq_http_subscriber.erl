@@ -10,14 +10,14 @@
 
 -behaviour(gen_server).
 
--export([start_link/0, init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2, code_change/3]).
+-export([start_link/1, init/1, handle_call/3, handle_cast/2, handle_info/2, terminate/2, code_change/3]).
 
 -include("rabbitmq_http.hrl").
 
 -record(state, {channel}).
 
-start_link() ->
-    gen_server:start_link({global, ?MODULE}, ?MODULE, [], []).
+start_link(ChildTerm) ->
+    gen_server:start_link({global, ChildTerm}, ?MODULE, [], []).
 
 init([]) ->
     {ok, Channel} = rabbitmq_http_util:start_rabbitmq_channel(),
@@ -63,15 +63,15 @@ start_rabbitmq_subscriber(Channel) ->
     Method = #'queue.declare'{durable = true, queue = QName},
     #'queue.declare_ok'{queue = Queue} = amqp_channel:call(Channel, Method),
 
-    Result = amqp_channel:subscribe(Channel,
-                                    #'basic.consume'{
-                                      queue        = Queue,
-                                      consumer_tag = "CTag",
-                                      no_local     = false,
-                                      no_ack       = false,
-                                      exclusive    = false
-                                     },
-                                    self()),
+    amqp_channel:subscribe(Channel,
+                           #'basic.consume'{
+                             queue        = Queue,
+                             consumer_tag = "CTag",
+                             no_local     = false,
+                             no_ack       = false,
+                             exclusive    = false
+                            },
+                           self()),
 
     #'queue.bind_ok'{} = amqp_channel:call(Channel,
                                            #'queue.bind'{
