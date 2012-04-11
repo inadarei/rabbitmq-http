@@ -45,6 +45,7 @@ handle_call({request, Req}, _, State = #state{channel = Channel}) ->
 
     Response = handle_request(Method, Path, Body, Channel),
     Req:respond(Response),
+    Req:cleanup(),
 
     {reply, ok, State};
 
