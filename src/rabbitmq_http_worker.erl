@@ -66,7 +66,7 @@ handle_request('POST', "/http/api/publish", _, _) ->
 handle_request('POST', _, <<>>, _) ->
     {404, [{"Content-Type", "text/plain"}], <<"Unknown Body">>};
 
-handle_request('POST', "/http/api/publish" ++ Topic, Body, Channel) ->
+handle_request('POST', "/http/api/publish/" ++ Topic, Body, Channel) ->
     Response = publish_message(Body, Topic, Channel),
     Response;
 

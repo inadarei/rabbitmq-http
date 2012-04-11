@@ -15,5 +15,9 @@
 -define(MQ_EXCHANGE, <<"rabbitmq_http.topic">>).
 -define(MQ_ROUTE_KEY, <<"#">>).
 -define(MQ_TYPE, <<"topic">>).
+-define(MQ_ROUTE_TABLE,
+        dict:from_list([
+                        {"example", "http://www.example.com/api/example"}
+                       ])).
 
 -endif.
