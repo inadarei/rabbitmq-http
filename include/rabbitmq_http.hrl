@@ -11,13 +11,15 @@
 
 -include_lib("amqp_client/include/amqp_client.hrl").
 
+-record(msgroute, {url, timeout = infinity}).
+
 -define(MQ_NUM_SUBSCRIBERS, 10).
 -define(MQ_EXCHANGE, <<"rabbitmq_http.topic">>).
 -define(MQ_ROUTE_KEY, <<"#">>).
 -define(MQ_TYPE, <<"topic">>).
 -define(MQ_ROUTE_TABLE,
         dict:from_list([
-                        {"example", "http://www.example.com/api/example"}
+                        {"example", #msgroute{url = "http://www.example.com/api/example", timeout = 1000}}
                        ])).
 
 -endif.

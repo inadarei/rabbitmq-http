@@ -49,8 +49,8 @@ handle_info({#'basic.deliver'{} = Info, Msg}, #state{channel = Channel} = State)
     {Path, Params, _Extras} = mochiweb_util:urlsplit_path(binary_to_list(RawPath)),
 
     case dict:find(Path, ?MQ_ROUTE_TABLE) of
-        {ok, ProcessorUrl} ->
-            post_message(ProcessorUrl ++ "?" ++ Params, Msg);
+        {ok, #msgroute{url = ProcessorUrl, timeout = Timeout}} ->
+            post_message(ProcessorUrl ++ "?" ++ Params, Timeout, Msg);
         _ -> ignore
     end,
 
@@ -61,9 +61,9 @@ handle_info(Info, State) ->
     io:format("handle_info ... ~p ~p ~n", [Info, State]),
     {noreply, State}.
 
-post_message(ProcessorURL, Msg) ->
+post_message(ProcessorURL, Timeout, Msg) ->
     {_, _, Payload} = Msg,
-    Response = httpc:request(post, {ProcessorURL, [], "application/x-www-form-urlencoded", Payload}, [], []),
+    Response = httpc:request(post, {ProcessorURL, [], "application/x-www-form-urlencoded", Payload}, [{timeout, Timeout}], []),
     Response.
 
 ack_message(Channel, DeliveryTag) ->
