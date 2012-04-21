@@ -63,7 +63,7 @@ handle_info(Info, State) ->
 
 post_message(ProcessorURL, Timeout, Msg) ->
     {_, _, Payload} = Msg,
-    Response = httpc:request(post, {ProcessorURL, [], "application/x-www-form-urlencoded", Payload}, [{timeout, Timeout}], []),
+    Response = httpc:request(post, {ProcessorURL, [], "application/x-www-form-urlencoded; charset=utf-8", Payload}, [{timeout, Timeout}], []),
     Response.
 
 ack_message(Channel, DeliveryTag) ->
